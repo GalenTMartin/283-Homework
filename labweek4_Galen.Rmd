@@ -1,0 +1,100 @@
+---
+title: "Week 4 Lab"
+author: "Galen M"
+date: "January 31, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+plot.diamonds <- ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar() +
+  theme(axis.text.x = element_text(angle=70, vjust=0.5))
+plot.diamonds
+```
+```{r}
+ggsave("diamonds.tif",device="tiff", dpi = 600)
+```
+
+
+## Multipanel Plots
+
+```{r}
+library(ggpubr)
+sub <- ggpubr::ggarrange(plot.diamonds, plot.diamonds, ncol = 1, nrow = 2)
+multi <- ggpubr::ggarrange(sub, plot.diamonds,
+          ncol = 2, nrow = 2, heights = c(4, 1), common.legend = FALSE)
+multi
+
+```
+
+```{r}
+library(egg)
+eggsub <- egg::ggarrange(plot.diamonds, plot.diamonds, ncol = 1, nrow = 2)
+eggsub <- 
+multiegg <- egg::ggarrange(plot.diamonds, sub, ncol = 2, heights=c(4,1))
+multiegg
+```
+
+## littler (not really)
+
+### Adding args to R on HPC
+
+Create text file from diamonds dataset
+```{r}
+library(tidyverse)
+readr::write_delim(diamonds, "diamonds.txt", delim = " ", na = "NA")
+```
+
+Script which will create a pdf outfile of the plot of diamonds; won't execute if there are no args
+
+```{r}
+#!/usr/bin/env R
+
+library(tidyverse)
+x = commandArgs(trailing=T)
+
+if (length(x)==0) {
+  stop("At least one argument must be supplied (input file).n", call.=FALSE)
+} else if (length(args)==1) {
+  # default output file
+  x[2] = "out.txt"
+}
+
+infile = x[1]
+outfile = x[2]
+
+y = read_delim(infile, delim=" ") 
+z <- ggplot(y, aes(clarity, fill = cut)) + geom_bar() +
+  theme(axis.text.x = element_text(angle=70, vjust=0.5))
+ggsave(outfile, z, device = pdf())
+
+```
+
+Execution of script with args
+
+```{bash}
+module load R/3.4.1
+R --no-save --args diamonds.txt diamondsout.pdf < rscripttest.R
+```
+
+
+## reticulate
+
+Still working on this part--I can't get R to recognize that I have python on my system.
+```{r}
+library(reticulate)
+use_python("C:\\Program Files (x86)\\Python37-32\\python.exe")
+```
+
+```{python}
+pd <- import("pandas", convert=F)
+x = data.frame(x=rnorm(100),y=rnorm(100))
+y = pd$DataFrame(r_to_py(x))
+z = py_to_r(y$describe())
+print(z)
+```
+
