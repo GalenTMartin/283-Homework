@@ -13,3 +13,16 @@ There are several programs which folks use to work with WGBS data. The predomina
 5. Align reads using bismark/bowtie2
 6. Obtain methylated/nonmethylated reads data from bismark _methylation_extractor
 7. Use binomial test to find real methylated cytosine positions
+
+
+### Analysis
+Unfortunately, my bisulfite conversion of the reference still hasn't finished, though I've gotten it to work with the [test data set](https://github.com/FelixKrueger/Bismark/blob/master/test_data.fastq) given by the bismark authors. Currently I'm also stuck on getting timmomatic to work since it's giving me a java error:
+```
+Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 1
+        at org.usadellab.trimmomatic.trim.IlluminaClippingTrimmer.makeIlluminaClippingTrimmer(IlluminaClippingTrimmer.java:54)
+        at org.usadellab.trimmomatic.trim.TrimmerFactory.makeTrimmer(TrimmerFactory.java:32)
+        at org.usadellab.trimmomatic.Trimmomatic.createTrimmers(Trimmomatic.java:41)
+        at org.usadellab.trimmomatic.TrimmomaticSE.run(TrimmomaticSE.java:298)
+        at org.usadellab.trimmomatic.Trimmomatic.main(Trimmomatic.java:67)
+```
+I realize that this has something to do with the fasta I'm giving it with adapter sequences, but I haven't had the time to work through it.
