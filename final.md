@@ -26,3 +26,5 @@ Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 1
         at org.usadellab.trimmomatic.Trimmomatic.main(Trimmomatic.java:67)
 ```
 I realize that this has something to do with the fasta I'm giving it with adapter sequences, but I haven't had the time to work through it.
+
+**All of the actual code is in final.sh**
