@@ -61,8 +61,28 @@ This was fixed by adding the seed mismatches, palindrome clip threshold, and sim
 
 After trimming, I used a test dataset of the trimmed reads to test the bismark alignment function:
 ```
-head -n 1000 SRR408788.trimmed2.fastq > testdata.trimmed.fastq
+head -n 10000 SRR408788.trimmed2.fastq > testdata.trimmed.fastq
 bismark --bowtie2 --genome /pub/galentm/283/bismarktest/ref/ --se testdata.trimmed.fastq
+```
+Bismark also prints a summary at this stage:
+```
+Final Cytosine Methylation Report
+=================================
+Total number of C's analysed:   802
+
+Total methylated C's in CpG context:    206
+Total methylated C's in CHG context:    138
+Total methylated C's in CHH context:    27
+Total methylated C's in Unknown context:        0
+
+Total unmethylated C's in CpG context:  27
+Total unmethylated C's in CHG context:  57
+Total unmethylated C's in CHH context:  347
+Total unmethylated C's in Unknown context:      0
+
+C methylated in CpG context:    88.4%
+C methylated in CHG context:    70.8%
+C methylated in CHH context:    7.2%
 ```
 
 Finally, I used bismark methylation extractor to get a file with the coverage and methylation state of each cytosine in the genome.
