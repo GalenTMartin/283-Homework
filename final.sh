@@ -39,13 +39,13 @@ prefetch -v SRR408794
 prefetch -v SRR408791
 prefetch -v SRR408790
 #downloaded to my home directory for some reason...
-cd 
-cd ncbi/public/sra/
+
+cd ~/ncbi/public/sra/
 mv SRR4087* /pub/galentm/283/bismarktest/reads/
 
 #Convert from .sra -> .fq
 cd /pub/galentm/283/bismarktest/reads/
-fastq-dump --split-files SRR4087*
+fastq-dump SRR4087*
 
 #Trim reads (min length 30 bp according to Danelle's manuscript). 
 #fastqc SRR408788.fastq <- outside script
@@ -67,4 +67,4 @@ cd /pub/galentm/283/bismarktest/
 bismark --bowtie2 --genome /pub/galentm/283/bismarktest/ref/ --se SRR408788.trimmed.fastq, SRR408796.trimmed.fastq, SRR408797.trimmed.fastq, SRR408795.trimmed.fastq, SRR408794.trimmed.fastq, SRR408791.trimmed.fastq, SRR408790.trimmed.fastq
 
 #Extract methylation data for each cytosine position
-bismark_methylation_extractor --multicore 10 --report --single-end *sam
+bismark_methylation_extractor --report --multicore ${NSLOTS} --single-end --cytosine_report --CX --genome_folder /pub/galentm/283/bismarktest/ref/ *bt2.bam
